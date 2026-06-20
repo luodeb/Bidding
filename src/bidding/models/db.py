@@ -38,6 +38,7 @@ class BidNoticeRecord(Base):
     content: Mapped[str | None] = mapped_column(Text)
     content_html: Mapped[str | None] = mapped_column(Text)
     attachments: Mapped[list | None] = mapped_column(JSON)
+    pdf_path: Mapped[str | None] = mapped_column(String(500))
 
     winner: Mapped[str | None] = mapped_column(String(200))
     win_amount: Mapped[str | None] = mapped_column(String(100))

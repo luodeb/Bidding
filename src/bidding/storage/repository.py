@@ -59,6 +59,7 @@ class NoticeRepository:
                 content=notice.content,
                 content_html=notice.content_html,
                 attachments=notice.attachments or None,
+                pdf_path=notice.pdf_path,
                 winner=notice.winner,
                 win_amount=notice.win_amount,
                 scraped_at=notice.scraped_at,

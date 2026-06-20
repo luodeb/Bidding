@@ -94,5 +94,18 @@ def fetch_details(
     typer.echo(f"\n详情采集完成，共更新 {fetcher.updated_count} 条记录")
 
 
+@app.command("fetch-pdf")
+def fetch_pdf(
+    site: Optional[list[str]] = typer.Option(None, "--site", "-s", help="站点名称"),
+    limit: int = typer.Option(50, "--limit", "-n", help="最多处理几条"),
+):
+    """从PDF附件提取公告正文（用于大唐等提供PDF链接的站点）"""
+    from bidding.core.pdf_fetcher import PdfFetcher
+
+    fetcher = PdfFetcher(limit=limit)
+    asyncio.run(fetcher.run(site_names=site))
+    typer.echo(f"\nPDF正文提取完成，共更新 {fetcher.updated_count} 条记录")
+
+
 if __name__ == "__main__":
     app()

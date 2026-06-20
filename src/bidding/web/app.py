@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from fastapi import FastAPI, Query, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import func, select
 
@@ -12,6 +12,9 @@ from bidding.storage.database import get_session_factory, init_db
 
 app = FastAPI(title="招标信息系统")
 templates = Jinja2Templates(directory=str(Path(__file__).parent / "templates"))
+
+_DATA_DIR = Path(__file__).resolve().parents[3] / "data"
+_PDF_DIR = _DATA_DIR / "pdf"
 
 NOTICE_TYPE_LABELS = {
     "bid_announcement": "招标公告",
@@ -89,3 +92,11 @@ async def detail(request: Request, notice_id: int):
             "type_labels": NOTICE_TYPE_LABELS,
         },
     )
+
+
+@app.get("/pdf/{filename}")
+async def serve_pdf(filename: str):
+    path = _PDF_DIR / filename
+    if not path.exists() or not path.name.endswith(".pdf"):
+        return HTMLResponse("<h1>PDF未找到</h1>", status_code=404)
+    return FileResponse(path, media_type="application/pdf")

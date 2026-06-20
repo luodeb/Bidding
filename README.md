@@ -7,7 +7,7 @@
 | 站点 | 名称 | 状态 |
 |------|------|------|
 | chnenergybidding.com.cn | 国能e招 | 已完成 |
-| cdt-ec.com | 大唐集团电商 | 待开发 |
+| cdt-ec.com | 大唐集团电商 | 已完成 |
 | ecp.sgcc.com.cn | 国家电网ECP | 待开发 |
 | sgccetp.com.cn | 国网电工交易 | 待开发 |
 | neep.shop | 国能e购 | 待开发 |
@@ -37,6 +37,9 @@ python -m bidding list-sites
 # 采集国能e招，最多翻5页
 python -m bidding scrape --site chnenergy --max-pages 5
 
+# 采集大唐集团
+python -m bidding scrape --site cdt_ec --max-pages 2
+
 # 有头模式（可以看到浏览器操作，方便调试）
 python -m bidding scrape --site chnenergy --max-pages 3 --headed
 
@@ -55,11 +58,20 @@ python -m bidding scrape
 列表采集只抓取标题和基本信息，正文需要单独采集：
 
 ```bash
-# 采集前50条缺少正文的记录
+# 采集前50条缺少正文的记录（通过详情页）
 python -m bidding fetch-details --site chnenergy --limit 50
 
 # 采集全部缺少正文的记录
 python -m bidding fetch-details --limit 999
+```
+
+### 从PDF提取正文
+
+大唐等站点公告正文以PDF形式提供，采集时自动提取。也可对已有记录补提取：
+
+```bash
+# 从PDF附件提取正文（大唐集团等）
+python -m bidding fetch-pdf --site cdt_ec --limit 50
 ```
 
 ### 启动 Web 页面
@@ -84,6 +96,7 @@ src/bidding/
 ├── core/
 │   ├── engine.py          # 采集引擎
 │   ├── detail_fetcher.py  # 详情页采集
+│   ├── pdf_fetcher.py     # PDF正文提取
 │   ├── dedup.py           # 去重
 │   └── pipeline.py        # 数据管道
 ├── models/
@@ -93,10 +106,13 @@ src/bidding/
 ├── adapters/
 │   ├── base.py            # 适配器基类
 │   ├── registry.py        # 自动发现与注册
-│   └── chnenergy.py       # 国能e招适配器
+│   ├── chnenergy.py       # 国能e招适配器
+│   └── cdt_ec.py          # 大唐集团适配器
 ├── storage/
 │   ├── database.py        # 数据库连接
 │   └── repository.py      # 数据读写
+├── utils/
+│   └── pdf.py             # PDF文本提取工具
 └── web/
     ├── app.py             # FastAPI 应用
     └── templates/         # 页面模板

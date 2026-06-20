@@ -34,6 +34,7 @@ class BidNotice(BaseModel):
     content: str | None = None
     content_html: str | None = None
     attachments: list[str] = Field(default_factory=list)
+    pdf_path: str | None = None
 
     winner: str | None = None
     win_amount: str | None = None

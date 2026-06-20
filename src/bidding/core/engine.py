@@ -73,6 +73,8 @@ class ScrapingEngine:
         )
 
         try:
+            await adapter.on_context_created(context)
+
             if adapter.meta.requires_login:
                 login_page = await context.new_page()
                 ok = await adapter.login(login_page)
