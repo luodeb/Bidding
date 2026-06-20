@@ -40,6 +40,7 @@
     <h1>{{ n.title }}</h1>
     <div class="meta">
       <span class="meta-item"><span class="type-tag type-{{ n.notice_type }}">{{ type_labels.get(n.notice_type, n.notice_type) }}</span></span>
+      <span class="meta-item"><strong>来源:</strong> {{ site_labels.get(n.source_site, n.source_site) }}</span>
       {% if n.notice_id %}<span class="meta-item"><strong>编号:</strong> {{ n.notice_id }}</span>{% endif %}
       {% if n.publish_date %}<span class="meta-item"><strong>发布:</strong> {{ n.publish_date }}</span>{% endif %}
       {% if n.deadline %}<span class="meta-item"><strong>截止:</strong> {{ n.deadline }}</span>{% endif %}

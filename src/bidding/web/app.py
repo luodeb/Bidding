@@ -16,6 +16,12 @@ templates = Jinja2Templates(directory=str(Path(__file__).parent / "templates"))
 _DATA_DIR = Path(__file__).resolve().parents[3] / "data"
 _PDF_DIR = _DATA_DIR / "pdf"
 
+SITE_LABELS = {
+    "chnenergy": "国能e招",
+    "cdt_ec": "大唐集团",
+    "sgcc_ecp": "国家电网ECP",
+}
+
 NOTICE_TYPE_LABELS = {
     "bid_announcement": "招标公告",
     "prequalification": "资格预审",
@@ -70,6 +76,7 @@ async def index(
             "notice_type": notice_type,
             "q": q,
             "type_labels": NOTICE_TYPE_LABELS,
+            "site_labels": SITE_LABELS,
         },
     )
 
@@ -90,6 +97,7 @@ async def detail(request: Request, notice_id: int):
         context={
             "n": record,
             "type_labels": NOTICE_TYPE_LABELS,
+            "site_labels": SITE_LABELS,
         },
     )
 

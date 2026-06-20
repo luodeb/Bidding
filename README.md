@@ -4,13 +4,13 @@
 
 ## 已支持站点
 
-| 站点 | 名称 | 状态 |
-|------|------|------|
-| chnenergybidding.com.cn | 国能e招 | 已完成 |
-| cdt-ec.com | 大唐集团电商 | 已完成 |
-| ecp.sgcc.com.cn | 国家电网ECP | 待开发 |
-| sgccetp.com.cn | 国网电工交易 | 待开发 |
-| neep.shop | 国能e购 | 待开发 |
+| 站点 | 名称 | 状态 | 备注 |
+|------|------|------|------|
+| chnenergybidding.com.cn | 国能e招 | 已完成 | 招标/中标/变更，详情页HTML提取 |
+| cdt-ec.com | 大唐集团电商 | 已完成 | 招标/非招标，PDF附件提取 |
+| ecp.sgcc.com.cn | 国家电网ECP | 已完成 | 招标/采购/中标/候选人公示，自动下载ZIP→提取DOCX正文 |
+| sgccetp.com.cn | 国网电工交易 | 待开发 | |
+| neep.shop | 国能e购 | 待开发 | |
 
 新增站点只需在 `src/bidding/adapters/` 下创建适配器文件。
 
@@ -39,6 +39,9 @@ python -m bidding scrape --site chnenergy --max-pages 5
 
 # 采集大唐集团
 python -m bidding scrape --site cdt_ec --max-pages 2
+
+# 采集国家电网ECP（支持招标、采购、中标、候选人公示）
+python -m bidding scrape --site sgcc_ecp --max-pages 2
 
 # 有头模式（可以看到浏览器操作，方便调试）
 python -m bidding scrape --site chnenergy --max-pages 3 --headed
@@ -107,12 +110,14 @@ src/bidding/
 │   ├── base.py            # 适配器基类
 │   ├── registry.py        # 自动发现与注册
 │   ├── chnenergy.py       # 国能e招适配器
-│   └── cdt_ec.py          # 大唐集团适配器
+│   ├── cdt_ec.py          # 大唐集团适配器
+│   └── sgcc_ecp.py        # 国家电网ECP适配器
 ├── storage/
 │   ├── database.py        # 数据库连接
 │   └── repository.py      # 数据读写
 ├── utils/
-│   └── pdf.py             # PDF文本提取工具
+│   ├── pdf.py             # PDF文本提取工具
+│   └── doc.py             # DOCX/DOC文本提取工具（国家电网ZIP→DOCX链）
 └── web/
     ├── app.py             # FastAPI 应用
     └── templates/         # 页面模板
