@@ -34,6 +34,7 @@ SITE_LABELS = {
     "chdtp": "华电集团",
     "powerchina": "中国电建",
     "chng": "华能集团",
+    "szecp": "华润守正",
 }
 
 NOTICE_TYPE_LABELS = {
