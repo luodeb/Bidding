@@ -40,6 +40,7 @@ SITE_LABELS = {
     "jnkg": "晋能控股招标采购",
     "ctg": "中国三峡集团电子采购平台",
     "china_an": "中国安能电子采购平台",
+    "hydl": "华源电力采购网",
 }
 
 NOTICE_TYPE_LABELS = {
